@@ -15,6 +15,9 @@ public class RoundSnapShot {
         if(round < 0 )
             throw new IllegalArgumentException("[ERROR] 시도 횟수는 양의 정수여야 합니다.");
 
+        if(participants < 0)
+            throw new IllegalArgumentException("[ERROR] 참여자는 양의 정수여야 합니다.");
+
         this.currentRound = 0;
         this.round = round;
         this.roundStates = new String[round+1][participants];
@@ -39,7 +42,7 @@ public class RoundSnapShot {
             throw new IllegalArgumentException("[ERROR] snapshot이 null 입니다.");
 
         if(round != currentRound + 1)
-            throw new IllegalArgumentException("[ERROR] round입력이 잘못되었습니다. required=%d, input=%d".
+            throw new IllegalArgumentException("[ERROR] 올바르지 않는 round입력입니다. required=%d, input=%d".
                     formatted(currentRound+1, round));
 
         this.currentRound++;

@@ -22,7 +22,6 @@ public class OutputView {
             throw new IllegalStateException("[ERROR] 경주가 아직 진행중에 있습니다. currentRound=%d, round=%d".
                     formatted(game.getCurrentRound(), game.getRound()));
 
-
         System.out.println("실행 결과");
 
         for(int i=1; i<=game.getRound(); i++) {
@@ -43,7 +42,6 @@ public class OutputView {
     }
 
 
-
     private static String buildRoundState(String[] roundState) {
         if(roundState == null || roundState.length == 0)
             return "";
@@ -55,5 +53,4 @@ public class OutputView {
         }
         return sb.toString();
     }
-
 }

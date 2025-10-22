@@ -2,12 +2,11 @@ package racingcar.domain;
 
 
 import racingcar.dto.GameRequest;
-import java.util.*;
 
 
 public class RacingGame {
 
-    private final RacingCar[] racingCars;
+    private final RacingCars racingCars;
 
     private int currentRound;
 
@@ -25,7 +24,7 @@ public class RacingGame {
 
 
     public RacingGame(String[] carNames, int round) {
-        this.racingCars = resolveCarNames(carNames);
+        this.racingCars = new RacingCars(carNames);
         this.round = validateRound(round);
         this.currentRound = 0;
         this.snapShot = initializeRoundSnapShot();
@@ -41,7 +40,8 @@ public class RacingGame {
         this.state = GameState.RUNNING;
 
         for (int i=currentRound; i<round; i++) {
-            Arrays.stream(racingCars).forEach(RacingCar::move);
+            racingCars.move();
+
             this.currentRound++;
             snapShot.recordRoundState(getCurrentRoundState(), currentRound);
         }
@@ -53,8 +53,8 @@ public class RacingGame {
             throw new IllegalStateException("[ERROR] 이미 종료된 게임입니다.");
 
         this.state = GameState.RUNNING;
+        racingCars.move();
 
-        Arrays.stream(racingCars).forEach(RacingCar::move);
         this.currentRound++;
         snapShot.recordRoundState(getCurrentRoundState(), currentRound);
 
@@ -64,7 +64,7 @@ public class RacingGame {
 
 
     public void reset() {
-        Arrays.stream(racingCars).forEach(RacingCar::reset);
+        racingCars.reset();
         snapShot.reset();
         this.state = GameState.READY;
         this.currentRound = 0;
@@ -73,12 +73,7 @@ public class RacingGame {
 
 
     public String[] getCurrentRoundState() {
-        String[] roundSnapshot = new String[racingCars.length];
-
-        for(int i=0; i<racingCars.length; i++) {
-            roundSnapshot[i] = racingCars[i].toString();
-        }
-        return roundSnapshot;
+        return racingCars.getCurrentRoundState();
     }
 
     public String[] getRoundState(int round) {
@@ -90,14 +85,7 @@ public class RacingGame {
         if(state != GameState.FINISHED)
             throw new IllegalStateException("[ERROR] 경주가 아직 진행중에 있습니다.");
 
-        int maxPosition = Arrays.stream(racingCars).mapToInt(RacingCar::getPosition)
-                .max().orElseThrow();
-
-        List<String> winners = Arrays.stream(racingCars).filter(car -> {
-            return car.getPosition() == maxPosition;
-        }).map(RacingCar::getName).toList();
-
-        return winners.toArray(new String[0]);
+        return racingCars.getLeaders();
     }
 
 
@@ -117,57 +105,18 @@ public class RacingGame {
         return state == GameState.FINISHED;
     }
 
-
-
-
-    private RacingCar[] resolveCarNames(String[] carNames) {
-        if(carNames==null)
-            throw new IllegalArgumentException("[ERROR] carNames가 null입니다.");
-
-        String[] uniqueCarNames = resolveDuplicateCarName(carNames);
-
-        RacingCar[] racingCars = new RacingCar[uniqueCarNames.length];
-
-        for(int i=0; i<uniqueCarNames.length; i++) {
-            String carName = uniqueCarNames[i];
-            racingCars[i] = new RacingCar(carName);
-        }
-
-        return racingCars;
+    public String[] getParticipants() {
+        return racingCars.getParticipantNames();
     }
 
 
-
-    private String[] resolveDuplicateCarName(String[] carNames) {
-        Map<String, Integer> counts = new HashMap<>();
-
-        String[] uniqueCarNames = new String[carNames.length];
-
-        for(int i=0; i< carNames.length; i++) {
-            String carName = carNames[i];
-
-            counts.put(carName, counts.getOrDefault(carName,0) + 1);
-            int count = counts.get(carName);
-
-            uniqueCarNames[i] = markDuplicateName(carName, count);
-        }
-
-        return uniqueCarNames;
-    }
 
     private RoundSnapShot initializeRoundSnapShot() {
         String[] currentRoundState = getCurrentRoundState();
-        return new RoundSnapShot(round, racingCars.length, currentRoundState);
+        return new RoundSnapShot(round, racingCars.getNumOfParticipant(), currentRoundState);
     }
 
 
-    private String markDuplicateName(String carName, int count) {
-        if(count > 1) {
-            String suffix = String.format("(%d)", count-1);
-            return carName + suffix;
-        }
-        return carName;
-    }
 
     private int validateRound(int round) {
         if(round <= 0)

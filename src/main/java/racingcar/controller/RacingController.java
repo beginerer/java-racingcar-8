@@ -10,6 +10,11 @@ import java.util.Arrays;
 public class RacingController {
 
 
+    public RacingController() {
+    }
+
+    /**
+     * 한번에 모든 라운드 실행하는 방식*/
     public void run() {
 
         String[] rawCarNames = InputView.inputCarNames();
@@ -26,6 +31,9 @@ public class RacingController {
         OutputView.showGameResult(game);
     }
 
+
+    /**
+     * 한 라운드씩 실행하는 방식*/
     public void run2() {
         String[] rawCarNames = InputView.inputCarNames();
         int round = InputView.inputRound();
