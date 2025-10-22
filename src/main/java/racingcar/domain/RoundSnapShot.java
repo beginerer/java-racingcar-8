@@ -7,17 +7,18 @@ public class RoundSnapShot {
 
     private int currentRound;
 
-    private int round;
+    private final int round;
 
 
 
-    public RoundSnapShot(int round, int participants) {
+    public RoundSnapShot(int round, int participants, String[] initialState) {
         if(round < 0 )
             throw new IllegalArgumentException("[ERROR] 시도 횟수는 양의 정수여야 합니다.");
 
         this.currentRound = 0;
         this.round = round;
-        this.roundStates = new String[round][participants];
+        this.roundStates = new String[round+1][participants];
+        this.roundStates[0] = initialState;
     }
 
 
@@ -25,6 +26,10 @@ public class RoundSnapShot {
         if(searchRound > currentRound)
             throw new IllegalArgumentException("[ERROR] 조회할 라운드가 진행된 라운드 보다 큽니다. searchRound=%d, currentRound=%d".
                     formatted(searchRound, currentRound));
+
+        if(searchRound < 0)
+            throw new IllegalArgumentException("[ERROR] searchRound는 양의 정수여야 합니다. searchRound=%d".
+                    formatted(searchRound));
 
         return roundStates[searchRound];
     }
@@ -37,11 +42,20 @@ public class RoundSnapShot {
             throw new IllegalArgumentException("[ERROR] round입력이 잘못되었습니다. required=%d, input=%d".
                     formatted(currentRound+1, round));
 
+        this.currentRound++;
         roundStates[round] = snapShot;
     }
+
 
     public void reset() {
         this.currentRound = 0;
     }
 
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public int getRound() {
+        return round;
+    }
 }

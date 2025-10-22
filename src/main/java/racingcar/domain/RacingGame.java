@@ -1,6 +1,7 @@
 package racingcar.domain;
 
 
+import racingcar.dto.GameRequest;
 import java.util.*;
 
 
@@ -18,12 +19,16 @@ public class RacingGame {
 
 
 
+    public RacingGame(GameRequest request) {
+        this(request.getCarNames(), request.getRound());
+    }
+
 
     public RacingGame(String[] carNames, int round) {
         this.racingCars = resolveCarNames(carNames);
         this.round = validateRound(round);
         this.currentRound = 0;
-        this.snapShot = new RoundSnapShot(round, carNames.length);
+        this.snapShot = initializeRoundSnapShot();
         this.state = GameState.READY;
     }
 
@@ -38,7 +43,7 @@ public class RacingGame {
         for (int i=currentRound; i<round; i++) {
             Arrays.stream(racingCars).forEach(RacingCar::move);
             this.currentRound++;
-            snapShot.recordRoundState(getCurrentRoundState(), i);
+            snapShot.recordRoundState(getCurrentRoundState(), currentRound);
         }
         this.state = GameState.FINISHED;
     }
@@ -76,6 +81,10 @@ public class RacingGame {
         return roundSnapshot;
     }
 
+    public String[] getRoundState(int round) {
+        return snapShot.getRoundState(round);
+    }
+
 
     public String[] getWinners() {
         if(state != GameState.FINISHED)
@@ -107,6 +116,8 @@ public class RacingGame {
     public boolean isFinished() {
         return state == GameState.FINISHED;
     }
+
+
 
 
     private RacingCar[] resolveCarNames(String[] carNames) {
@@ -142,6 +153,11 @@ public class RacingGame {
         }
 
         return uniqueCarNames;
+    }
+
+    private RoundSnapShot initializeRoundSnapShot() {
+        String[] currentRoundState = getCurrentRoundState();
+        return new RoundSnapShot(round, racingCars.length, currentRoundState);
     }
 
 

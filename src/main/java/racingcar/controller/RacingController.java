@@ -1,0 +1,51 @@
+package racingcar.controller;
+
+import racingcar.domain.RacingGame;
+import racingcar.dto.GameRequest;
+import racingcar.view.InputView;
+import racingcar.view.OutputView;
+
+import java.util.Arrays;
+
+public class RacingController {
+
+
+    public void run() {
+
+        String[] rawCarNames = InputView.inputCarNames();
+        int round = InputView.inputRound();
+
+        String[] carNames = removeSpace(rawCarNames);
+
+        GameRequest request = new GameRequest(carNames, round);
+
+        RacingGame game = new RacingGame(request);
+
+        game.playAllRounds();
+
+        OutputView.showGameResult(game);
+    }
+
+    public void run2() {
+        String[] rawCarNames = InputView.inputCarNames();
+        int round = InputView.inputRound();
+
+        String[] carNames = removeSpace(rawCarNames);
+
+        GameRequest request = new GameRequest(carNames, round);
+
+        RacingGame game = new RacingGame(request);
+
+
+        System.out.println("실행 결과");
+        while (!game.isFinished()) {
+            game.playRound();
+            OutputView.showCurrentRoundState(game);
+        }
+        OutputView.showWinners(game);
+    }
+
+    private String[] removeSpace(String[] rawCarNames) {
+        return Arrays.stream(rawCarNames).map(String::trim).toArray(String[]::new);
+    }
+}

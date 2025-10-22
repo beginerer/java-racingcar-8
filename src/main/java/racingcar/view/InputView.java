@@ -6,16 +6,7 @@ import racingcar.dto.GameRequest;
 public class InputView {
 
 
-    private static final String DELIMITER_REGEX = ";,";
-
-
-
-    public static GameRequest readGameRequest() {
-        String[] carNames = inputCarNames();
-        int round = inputRound();
-
-        return new GameRequest(carNames, round);
-    }
+    private static final String DELIMITER_REGEX = ",";
 
 
 

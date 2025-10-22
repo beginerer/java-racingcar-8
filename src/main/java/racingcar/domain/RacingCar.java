@@ -50,8 +50,9 @@ public class RacingCar {
 
 
     private String validateCarName(String carName) {
-        if(carName == null || carName.isEmpty())
-            throw new IllegalArgumentException("[ERROR] 자동차 이름이 null 또는 empty입니다.");
+        if(carName == null || carName.isBlank())
+            throw new IllegalArgumentException("[ERROR] 자동차 이름이 비어 있습니다.");
+
 
         if(carName.length() >  NAME_MAX_LEN)
             throw new IllegalArgumentException("[ERROR] 자동차 이름은 5글자 이하만 가능합니다. name=%s length=%d".
