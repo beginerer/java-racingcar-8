@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class RacingGameTest {
 
-    private static int round = 5;
+    private static final int round = 5;
 
 
 
@@ -42,6 +42,16 @@ class RacingGameTest {
         Assertions.assertThatThrownBy(() -> new RacingGame(input, -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR] 라운드는 0보다 커야 합니다.");
+    }
+
+    @Test
+    @DisplayName("자동차 이름에 공백이 입력된다면 예외가 발생한다.")
+    public void test4() {
+        String[] input = {"","홍길동","홍길동"};
+
+        Assertions.assertThatThrownBy(() -> new RacingGame(input, round))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("[ERROR] 자동차 이름이 비어 있습니다.");
     }
 
 

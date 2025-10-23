@@ -5,6 +5,8 @@ public class RacingCar {
 
     private static final int NAME_MAX_LEN = 5;
 
+    private static final int DEFAULT_POSITION = 0;
+
 
     private final String name;
 
@@ -19,7 +21,7 @@ public class RacingCar {
 
     public RacingCar(String name, MoveStrategy strategy) {
         this.name = validateCarName(name);
-        this.position = 0;
+        this.position = DEFAULT_POSITION;
         this.strategy = strategy;
     }
 
@@ -35,7 +37,7 @@ public class RacingCar {
 
 
     public void reset() {
-        this.position = 0;
+        this.position = DEFAULT_POSITION;
     }
 
 

@@ -45,7 +45,7 @@ public class RacingController {
         RacingGame game = new RacingGame(request);
 
 
-        System.out.println("실행 결과");
+        OutputView.printStartMessage();
         while (!game.isFinished()) {
             game.playRound();
             OutputView.showCurrentRoundState(game);

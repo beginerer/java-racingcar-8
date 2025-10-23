@@ -3,6 +3,9 @@ package racingcar.domain;
 
 public class RoundSnapShot {
 
+    private static final int DEFAULT_ROUND = 0;
+
+
     private final String[][] roundStates;
 
     private int currentRound;
@@ -18,7 +21,7 @@ public class RoundSnapShot {
         if(participants < 0)
             throw new IllegalArgumentException("[ERROR] 참여자는 양의 정수여야 합니다.");
 
-        this.currentRound = 0;
+        this.currentRound = DEFAULT_ROUND;
         this.round = round;
         this.roundStates = new String[round+1][participants];
         this.roundStates[0] = initialState;
@@ -51,7 +54,7 @@ public class RoundSnapShot {
 
 
     public void reset() {
-        this.currentRound = 0;
+        this.currentRound = DEFAULT_ROUND;
     }
 
     public int getCurrentRound() {

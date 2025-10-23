@@ -6,6 +6,9 @@ import racingcar.dto.GameRequest;
 
 public class RacingGame {
 
+    private static final int DEFAULT_ROUND = 0;
+
+
     private final RacingCars racingCars;
 
     private int currentRound;
@@ -26,7 +29,7 @@ public class RacingGame {
     public RacingGame(String[] carNames, int round) {
         this.racingCars = new RacingCars(carNames);
         this.round = validateRound(round);
-        this.currentRound = 0;
+        this.currentRound = DEFAULT_ROUND;
         this.snapShot = initializeRoundSnapShot();
         this.state = GameState.READY;
     }
@@ -42,7 +45,7 @@ public class RacingGame {
         for (int i=currentRound; i<round; i++) {
             racingCars.move();
 
-            this.currentRound++;
+            currentRound++;
             snapShot.recordRoundState(getCurrentRoundState(), currentRound);
         }
         this.state = GameState.FINISHED;
@@ -55,7 +58,7 @@ public class RacingGame {
         this.state = GameState.RUNNING;
         racingCars.move();
 
-        this.currentRound++;
+        currentRound++;
         snapShot.recordRoundState(getCurrentRoundState(), currentRound);
 
         if(currentRound == round)
@@ -67,7 +70,7 @@ public class RacingGame {
         racingCars.reset();
         snapShot.reset();
         this.state = GameState.READY;
-        this.currentRound = 0;
+        this.currentRound = DEFAULT_ROUND;
     }
 
 
