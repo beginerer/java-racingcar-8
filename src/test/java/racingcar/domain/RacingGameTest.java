@@ -49,6 +49,7 @@ class RacingGameTest {
         game.playRound();
         //then
         Assertions.assertThat(game.getCurrentRound()).isEqualTo(DEFAULT_ROUND + 1);
+        Assertions.assertThat(game.getState()).isEqualTo(GameState.RUNNING);
         Assertions.assertThat(game.isFinished()).isFalse();
     }
 
