@@ -26,10 +26,10 @@ public class RacingCars {
 
     public int getMaxPosition() {
         return Arrays.stream(racingCars).mapToInt(RacingCar::getPosition)
-                .max().orElseThrow();
+                .max().orElseThrow(() -> new IllegalStateException("[ERROR] maxPosition을 찾을 수 없습니다."));
     }
 
-    public String[] getLeaders() {
+    public String[] getLeaderNames() {
         int maxPosition = getMaxPosition();
 
         List<String> leaders = Arrays.stream(racingCars).filter(car -> {

@@ -84,11 +84,11 @@ public class RacingGame {
     }
 
 
-    public String[] getWinners() {
+    public String[] getWinnerNames() {
         if(state != GameState.FINISHED)
             throw new IllegalStateException("[ERROR] 경주가 아직 진행중에 있습니다.");
 
-        return racingCars.getLeaders();
+        return racingCars.getLeaderNames();
     }
 
 

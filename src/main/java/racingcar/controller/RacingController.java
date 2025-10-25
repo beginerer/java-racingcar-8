@@ -7,6 +7,7 @@ import racingcar.view.OutputView;
 
 import java.util.Arrays;
 
+
 public class RacingController {
 
 

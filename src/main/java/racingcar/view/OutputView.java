@@ -37,7 +37,7 @@ public class OutputView {
             throw new IllegalStateException("[ERROR] 경주가 아직 진행중에 있습니다. currentRound=%d, round=%d".
                     formatted(game.getCurrentRound(), game.getRound()));
 
-        String winners = String.join(DELIMITER, game.getWinners());
+        String winners = String.join(DELIMITER, game.getWinnerNames());
         System.out.println("최종 우승자 : " + winners);
     }
 
